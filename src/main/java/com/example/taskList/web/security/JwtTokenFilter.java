@@ -1,5 +1,6 @@
 package com.example.taskList.web.security;
 
+import com.example.taskList.domain.exception.ResourceNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -25,17 +26,14 @@ public class JwtTokenFilter extends GenericFilterBean {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             bearerToken = bearerToken.substring(7);
         }
-        try {
-            if (bearerToken != null
-                    && jwtTokenProvider.validateToken(bearerToken)) {
-                Authentication authentication
-                        = jwtTokenProvider.getAuthentication(bearerToken);
+        if (bearerToken != null && jwtTokenProvider.validateToken(bearerToken)) {
+            try {
+                Authentication authentication = jwtTokenProvider.getAuthentication(bearerToken);
                 if (authentication != null) {
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+            } catch (ResourceNotFoundException ignored) {
             }
-        } catch (Exception ignored) {
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

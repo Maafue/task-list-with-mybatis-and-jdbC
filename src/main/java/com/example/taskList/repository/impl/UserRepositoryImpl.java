@@ -25,11 +25,12 @@ public class UserRepositoryImpl implements UserRepository {
             select
                 u.id as user_id,
                 u.username as user_username,
+                u.name as user_name,
                 u.password as user_password,
                 ur.role as user_role_role,
                 t.id as task_id,
                 t.title as task_title,
-                t.description as description,
+                t.description as task_description,
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
                         
@@ -38,18 +39,19 @@ public class UserRepositoryImpl implements UserRepository {
                 left join users_tasks ut on u.id = ut.user_id
                 left join tasks t on ut.task_id = t.id
             where
-                u."id" = :id
+                u."id" = ?
             """;
 
     private final String FIND_BY_USERNAME = """
             select
                 u.id as user_id,
                 u.username as user_username,
+                u.name as user_name,
                 u.password as user_password,
                 ur.role as user_role_role,
                 t.id as task_id,
                 t.title as task_title,
-                t.description as description,
+                t.description as task_description,
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
             from users u
@@ -57,35 +59,35 @@ public class UserRepositoryImpl implements UserRepository {
                 left join users_tasks ut on u.id = ut.user_id
                 left join tasks t on ut.task_id = t.id
             where
-                u."username" = :id
+                u.username = ?
             """;
 
     private final String UPDATE = """
             UPDATE users
-            SET name = :name
-                username = :username
-                password = :password
-            WHERE id = :id""";
+            SET name = ?,
+                username = ?,
+                password = ?
+            WHERE id = ?""";
 
     private final String CREATE = """
             insert into users (name, username, password)
-            values (:name, :username, :password)""";
+            values (?, ?, ?)""";
 
     private final String INSERT_USER_ROLE = """
             insert into users_roles (user_id, role)
-            values (:user_id, :role)""";
+            values (?, ?)""";
 
     private final String IS_TASK_OWNER = """
             select exists (
                 select 1
                 from users_tasks
-                where user_id = :user_id
-                    and task_id = :task_id
+                where user_id = ?
+                    and task_id = ?
                 )""";
 
     private final String DELETE = """
             delete from users
-            where id = :id""";
+            where id = ?""";
 
     @Override
     public Optional<User> findById(Long id) {
@@ -112,7 +114,8 @@ public class UserRepositoryImpl implements UserRepository {
                     ResultSet.CONCUR_READ_ONLY);
             statement.setString(1, username);
             try (ResultSet rs = statement.executeQuery()) {
-                return Optional.ofNullable(UserRowMapper.mapRow(rs));
+                User user = UserRowMapper.mapRow(rs);
+                return Optional.ofNullable(user);
             }
         } catch (SQLException throwables) {
             throw new ResourceMappingException("Exception while finding user by username.");
@@ -128,6 +131,7 @@ public class UserRepositoryImpl implements UserRepository {
             statement.setString(2, user.getUsername());
             statement.setString(3, user.getPassword());
             statement.setLong(4, user.getId());
+            statement.executeUpdate();
         } catch (SQLException throwables) {
             throw new ResourceMappingException("Exception while updating user.");
         }

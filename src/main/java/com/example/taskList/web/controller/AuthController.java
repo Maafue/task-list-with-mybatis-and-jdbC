@@ -9,6 +9,8 @@ import com.example.taskList.web.dto.user.UserDto;
 import com.example.taskList.web.dto.validation.OnCreate;
 import com.example.taskList.web.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +26,11 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public JwtResponse login (@Validated @RequestBody JwtRequest loginRequest) {
+    public JwtResponse login(@Validated @RequestBody final JwtRequest loginRequest) {
+        passwordEncoder.encode("12345");
         return authService.login(loginRequest);
     }
 

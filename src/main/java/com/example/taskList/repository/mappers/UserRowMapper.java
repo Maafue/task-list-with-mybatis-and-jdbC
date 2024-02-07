@@ -29,6 +29,7 @@ public class UserRowMapper {
             user.setPassword(resultSet.getString("user_password"));
             user.setRoles(roles);
             user.setTasks(tasks);
+            return user;
         }
         return null;
     }

@@ -25,7 +25,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
             from tasks t
-            where id = :id""";
+            where id = ?""";
 
     private final String FIND_ALL_BY_USER_ID = """
             select t.id as task_id,
@@ -35,30 +35,30 @@ public class TaskRepositoryImpl implements TaskRepository {
                 t.status as task_status
             from tasks t
                 join users_tasks ut on t.id = ut.task_id
-            where ut.user_id = :id""";
+            where ut.user_id = ?""";
 
 
     private final String ASSIGN = """
             insert into users_tasks (task_id, user_id)
-            values (:task_id, :user_id)""";
+            values (?, ?)""";
 
     private final String UPDATE = """
             update tasks
-            set title = :title,
-                description = :description,
-                expiration_date = :expiration_date,
-                status = :status
-            where id = :id
+            set title = ?,
+                description = ?,
+                expiration_date = ?,
+                status = ?
+            where id = ?
             """;
 
     private final String CREATE = """
             insert into tasks (title, description, expiration_date, status)
-            values (:title, :description, :expiration_date, :status)
+            values (?, ?, ?, ?)
             """;
 
     private final String DELETE = """
             DELETE FROM tasks
-            where id = :id""";
+            where id = ?""";
 
     @Override
     public Optional<Task> findById(Long id) {
@@ -155,7 +155,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             statement.setString(4, task.getStatus().name());
             statement.executeUpdate();
 
-            try (ResultSet rs = statement.getResultSet()) {
+            try (ResultSet rs = statement.getGeneratedKeys()) {
                 rs.next();
                 task.setId(rs.getLong(1));
             }

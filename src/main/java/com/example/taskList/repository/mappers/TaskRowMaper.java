@@ -3,9 +3,7 @@ package com.example.taskList.repository.mappers;
 import com.example.taskList.domain.task.Status;
 import com.example.taskList.domain.task.Task;
 import lombok.SneakyThrows;
-
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
