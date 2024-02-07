@@ -64,7 +64,7 @@ public class ControllerAdvice {
         return exceptionBody;
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
         return new ExceptionBody("Internal error.");

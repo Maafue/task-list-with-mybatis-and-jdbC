@@ -146,6 +146,7 @@ public class UserRepositoryImpl implements UserRepository {
             statement.setString(2, user.getUsername());
             statement.setString(3, user.getPassword());
             statement.executeUpdate();
+
             try (ResultSet rs = statement.getResultSet()) {
                 rs.next();
                 user.setId(rs.getLong(1));
