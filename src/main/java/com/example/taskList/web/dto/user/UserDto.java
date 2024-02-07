@@ -6,11 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.scheduling.config.Task;
-
-import javax.management.relation.Role;
-import java.util.List;
-import java.util.Set;
 
 @Data
 public class UserDto {
