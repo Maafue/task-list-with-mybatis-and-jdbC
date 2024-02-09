@@ -4,11 +4,12 @@ spring:
     username: postgres
     password: qwerty123
     driver-class-name: org.postgresql.Driver
-  sql:
-    init:
-      mode: always
-      continue-on-error: false
-#      data-locations: classpath:demo_data.sql
+  liquibase:
+    change-log: classpath:liquibase/database.changelog.yaml
+    enabled: true
+    default-schema: tasklist
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
 security:
   jwt:
     secret: YXNrZGpsZmhhc2praHZsYXp4aXVjeXh1aW95d29pZXJibW4sU0JDbGFpc3VkeWY=

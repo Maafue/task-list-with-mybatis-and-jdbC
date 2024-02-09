@@ -21,6 +21,9 @@
 		<hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
 		<jakarta-validation.version>3.0.2</jakarta-validation.version>
 		<jjwt.version>0.12.3</jjwt.version>
+		<mybatis.version>3.0.3</mybatis.version>
+		<liquibase.version>4.25.1</liquibase.version>
+		<springdoc.version>2.3.0</springdoc.version>
 	</properties>
 	<dependencies>
 
@@ -42,6 +45,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase.version}</version>
 		</dependency>
 
 		<dependency>
@@ -105,6 +120,12 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 	</dependencies>

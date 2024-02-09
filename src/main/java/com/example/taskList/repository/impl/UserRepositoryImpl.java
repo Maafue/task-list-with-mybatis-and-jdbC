@@ -9,13 +9,10 @@ import com.example.taskList.repository.mappers.UserRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
@@ -170,12 +167,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean isTaskOwner(Long userId, Role role) {
+    public boolean isTaskOwner(Long userId, Long taskId) {
         try {
             Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(IS_TASK_OWNER);
             statement.setLong(1, userId);
-            statement.setString(2, role.name());
+            statement.setLong(2, taskId);
             try (ResultSet rs = statement.executeQuery()) {
                 rs.next();
                 return rs.getBoolean(1);
